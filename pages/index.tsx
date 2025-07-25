@@ -9,7 +9,7 @@ import styles from '../styles/Home.module.css'
 import { SearchDialog } from '@/components/SearchDialog'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { TicketUpload } from '@/components/TicketUpload'
 import { flattenTickets, FlattenedTicket } from '@/components/flattenTickets';
 import { TicketTable } from '@/components/TicketTable';
@@ -19,11 +19,24 @@ import { CategoryUploader } from '@/components/data-uploaders/CategoryUploader';
 import { CompanyUploader } from '@/components/data-uploaders/CompanyUploader';
 import { CustomerUploader } from '@/components/data-uploaders/CustomerUploader';
 import { StatusUploader } from '@/components/data-uploaders/StatusUploader';
+import { TypeUploader } from '@/components/data-uploaders/TypeUploader';
+import { AgentUploader } from '@/components/data-uploaders/AgentUploader';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [view, setView] = React.useState<'tickets' | 'articles' | 'categories' | 'companies' | 'customers' | 'statuses'>('tickets');
+  // Use null for fallback view
+  const [view, setView] = useState<
+    | null
+    | 'tickets'
+    | 'articles'
+    | 'categories'
+    | 'customers'
+    | 'statuses'
+    | 'types'
+    | 'agents'
+    | 'companies'
+  >(null);
   const [tickets, setTickets] = React.useState<any[]>([]);
   const [flatTickets, setFlatTickets] = React.useState<FlattenedTicket[]>([]);
 
@@ -44,68 +57,118 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className="w-full flex flex-col items-center">
-          <div className="flex gap-4 mb-6">
-            <button
-              className={`px-4 py-2 rounded font-semibold border ${view === 'tickets' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-              onClick={() => setView('tickets')}
-            >
-              Upload Tickets
-            </button>
-            <button
-              className={`px-4 py-2 rounded font-semibold border ${view === 'articles' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-              onClick={() => setView('articles')}
-            >
-              Upload Articles (Teamwork Desk)
-            </button>
-            <button
-              className={`px-4 py-2 rounded font-semibold border ${view === 'categories' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-              onClick={() => setView('categories')}
-            >
-              Upload Categories (Teamwork Desk)
-            </button>
-            <button
-              className={`px-4 py-2 rounded font-semibold border ${view === 'companies' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-              onClick={() => setView('companies')}
-            >
-              Upload Companies (Teamwork Desk/Projects)
-            </button>
-            <button
-              className={`px-4 py-2 rounded font-semibold border ${view === 'customers' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-              onClick={() => setView('customers')}
-            >
-              Upload Customers (Teamwork Desk)
-            </button>
-            <button
-              className={`px-4 py-2 rounded font-semibold border ${view === 'statuses' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-              onClick={() => setView('statuses')}
-            >
-              Upload Statuses (Teamwork Desk)
-            </button>
+          {/* Teamwork Desk Group */}
+          <div className="w-full max-w-5xl mb-2">
+            <div className="font-bold text-lg mb-1 mt-4">Teamwork Desk Objects</div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'tickets' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('tickets')}
+              >
+                Upload Tickets <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'articles' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('articles')}
+              >
+                Upload Articles <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'categories' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('categories')}
+              >
+                Upload Categories <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'customers' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('customers')}
+              >
+                Upload Customers <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'statuses' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('statuses')}
+              >
+                Upload Statuses <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'types' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('types')}
+              >
+                Upload Ticket Types <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'agents' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('agents')}
+              >
+                Upload Agents <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+            </div>
           </div>
-          {view === 'tickets' ? (
-            <>
-              <TicketUpload onTicketsParsed={setTickets} />
-              {flatTickets.length > 0 && (
-                <>
-                  <div className="mt-4 text-green-700 font-semibold">Parsed {flatTickets.length} unique tickets.</div>
-                  <div className="w-full mt-6">
-                    <ExportToolbar tickets={flatTickets} />
-                    <TicketTable tickets={flatTickets} onTicketsChange={setFlatTickets} />
-                  </div>
-                </>
-              )}
-            </>
-          ) : view === 'articles' ? (
-            <ArticleUploader />
-          ) : view === 'categories' ? (
-            <CategoryUploader />
-          ) : view === 'companies' ? (
-            <CompanyUploader />
-          ) : view === 'customers' ? (
-            <CustomerUploader />
-          ) : (
-            <StatusUploader />
-          )}
+          {/* Teamwork Projects Group */}
+          <div className="w-full max-w-5xl mb-2">
+            <div className="font-bold text-lg mb-1 mt-4">Teamwork Project Objects</div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'companies' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('companies')}
+              >
+                Upload Companies <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              {/* Add more Teamwork Projects tabs here as needed */}
+            </div>
+          </div>
+          {/* Xero Group */}
+          <div className="w-full max-w-5xl mb-2">
+            <div className="font-bold text-lg mb-1 mt-4">Xero Accounting Objects</div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button className="px-4 py-2 rounded font-semibold border bg-gray-100 text-gray-400 cursor-not-allowed" disabled>
+                Upload Xero Contacts
+              </button>
+              <button className="px-4 py-2 rounded font-semibold border bg-gray-100 text-gray-400 cursor-not-allowed" disabled>
+                Upload Xero Invoices
+              </button>
+              <button className="px-4 py-2 rounded font-semibold border bg-gray-100 text-gray-400 cursor-not-allowed" disabled>
+                Upload Xero Payments
+              </button>
+            </div>
+          </div>
+          {/* Main panel: uploader or fallback */}
+          <div className="w-full max-w-5xl mt-4">
+            {view === 'tickets' ? (
+              <>
+                <TicketUpload onTicketsParsed={setTickets} />
+                {flatTickets.length > 0 && (
+                  <>
+                    <div className="mt-4 text-green-700 font-semibold">Parsed {flatTickets.length} unique tickets.</div>
+                    <div className="w-full mt-6">
+                      <ExportToolbar tickets={flatTickets} />
+                      <TicketTable tickets={flatTickets} onTicketsChange={setFlatTickets} />
+                    </div>
+                  </>
+                )}
+              </>
+            ) : view === 'articles' ? (
+              <ArticleUploader />
+            ) : view === 'categories' ? (
+              <CategoryUploader />
+            ) : view === 'companies' ? (
+              <CompanyUploader />
+            ) : view === 'customers' ? (
+              <CustomerUploader />
+            ) : view === 'statuses' ? (
+              <StatusUploader />
+            ) : view === 'types' ? (
+              <TypeUploader />
+            ) : view === 'agents' ? (
+              <AgentUploader />
+            ) : (
+              <div className="bg-slate-50 border rounded p-8 text-center text-slate-700 text-lg mt-8">
+                <div className="mb-2 font-bold text-xl">Welcome to the Data Ingestion Dashboard</div>
+                <div>Select a data source and object type above to begin uploading and syncing your data.</div>
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.center}>
           <SearchDialog />
