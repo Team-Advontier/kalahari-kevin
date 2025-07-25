@@ -21,6 +21,10 @@ function showToast(msg: string, type: 'success' | 'error' = 'success') {
   }
 }
 
+function parseBoolean(val: any): boolean {
+  return typeof val === 'string' ? val.toLowerCase() === 'yes' : Boolean(val);
+}
+
 type RowUploadResult = {
   row: FlattenedTicket;
   status: 'success' | 'error';
@@ -40,10 +44,10 @@ export const ExportToolbar: React.FC<ExportToolbarProps> = ({ tickets }) => {
 
   // Deduplicate by id (client-side)
   const dedupedTickets = React.useMemo(() => {
-    const seen = new Set<string>();
+    const seen = new Set<number>();
     return tickets.filter(t => {
-      if (!t.id || seen.has(t.id)) return false;
-      seen.add(t.id);
+      if (!t.ticketid || seen.has(t.ticketid)) return false;
+      seen.add(t.ticketid);
       return true;
     });
   }, [tickets]);
@@ -77,18 +81,18 @@ export const ExportToolbar: React.FC<ExportToolbarProps> = ({ tickets }) => {
       const rows = batch.map((t) => ({
         source_data: t,
         subject: t.subject,
-        ticketstatus: t.ticketStatus,
-        tickettype: t.ticketType,
-        createdat: t.createdAt ? new Date(t.createdAt) : null,
-        updatedat: t.updatedAt ? new Date(t.updatedAt) : null,
-        customerid: t.customerID,
-        firstmessage: t.firstMessage,
+        ticketstatus: t.ticketstatus,
+        tickettype: t.tickettype,
+        createdat: t.createdat,
+        updatedat: t.updatedat,
+        customerid: t.customerid,
+        firstmessage: t.firstmessage,
         attachments: t.attachments,
         tags: t.tags,
-        threadcount: t.threadCount,
-        hasattachments: t.hasAttachments,
-        assignedtoid: t.assignedToID || null,
-        ticketid: t.id, // ensure ticketid is included for upsert
+        threadcount: t.threadcount,
+        hasattachments: parseBoolean(t.hasattachments),
+        assignedtoid: t.assignedtoid || null,
+        ticketid: t.ticketid, // now numeric
         synced_at: new Date().toISOString(),
       }));
       const { error } = await supabase

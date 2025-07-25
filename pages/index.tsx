@@ -21,6 +21,11 @@ import { CustomerUploader } from '@/components/data-uploaders/CustomerUploader';
 import { StatusUploader } from '@/components/data-uploaders/StatusUploader';
 import { TypeUploader } from '@/components/data-uploaders/TypeUploader';
 import { AgentUploader } from '@/components/data-uploaders/AgentUploader';
+import { ProjectUploader } from '@/components/data-uploaders/ProjectUploader';
+import { TaskUploader } from '@/components/data-uploaders/TaskUploader';
+import { XeroInvoiceUploader } from '@/components/data-uploaders/XeroInvoiceUploader';
+import { XeroContactUploader } from '@/components/data-uploaders/XeroContactUploader';
+import { XeroQuoteUploader } from '@/components/data-uploaders/XeroQuoteUploader';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,6 +41,11 @@ export default function Home() {
     | 'types'
     | 'agents'
     | 'companies'
+    | 'projects'
+    | 'tasks'
+    | 'xeroInvoices'
+    | 'xeroContacts'
+    | 'xeroQuotes'
   >(null);
   const [tickets, setTickets] = React.useState<any[]>([]);
   const [flatTickets, setFlatTickets] = React.useState<FlattenedTicket[]>([]);
@@ -115,6 +125,18 @@ export default function Home() {
               >
                 Upload Companies <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
               </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'projects' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('projects')}
+              >
+                Upload Projects (Excel) <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'tasks' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('tasks')}
+              >
+                Upload Tasks (Excel) <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">upsert</span>
+              </button>
               {/* Add more Teamwork Projects tabs here as needed */}
             </div>
           </div>
@@ -122,14 +144,23 @@ export default function Home() {
           <div className="w-full max-w-5xl mb-2">
             <div className="font-bold text-lg mb-1 mt-4">Xero Accounting Objects</div>
             <div className="flex flex-wrap gap-2 mb-4">
-              <button className="px-4 py-2 rounded font-semibold border bg-gray-100 text-gray-400 cursor-not-allowed" disabled>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'xeroContacts' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('xeroContacts')}
+              >
                 Upload Xero Contacts
               </button>
-              <button className="px-4 py-2 rounded font-semibold border bg-gray-100 text-gray-400 cursor-not-allowed" disabled>
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'xeroInvoices' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('xeroInvoices')}
+              >
                 Upload Xero Invoices
               </button>
-              <button className="px-4 py-2 rounded font-semibold border bg-gray-100 text-gray-400 cursor-not-allowed" disabled>
-                Upload Xero Payments
+              <button
+                className={`px-4 py-2 rounded font-semibold border ${view === 'xeroQuotes' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+                onClick={() => setView('xeroQuotes')}
+              >
+                Upload Xero Quotes
               </button>
             </div>
           </div>
@@ -154,6 +185,10 @@ export default function Home() {
               <CategoryUploader />
             ) : view === 'companies' ? (
               <CompanyUploader />
+            ) : view === 'projects' ? (
+              <ProjectUploader />
+            ) : view === 'tasks' ? (
+              <TaskUploader />
             ) : view === 'customers' ? (
               <CustomerUploader />
             ) : view === 'statuses' ? (
@@ -162,6 +197,12 @@ export default function Home() {
               <TypeUploader />
             ) : view === 'agents' ? (
               <AgentUploader />
+            ) : view === 'xeroInvoices' ? (
+              <XeroInvoiceUploader />
+            ) : view === 'xeroContacts' ? (
+              <XeroContactUploader />
+            ) : view === 'xeroQuotes' ? (
+              <XeroQuoteUploader />
             ) : (
               <div className="bg-slate-50 border rounded p-8 text-center text-slate-700 text-lg mt-8">
                 <div className="mb-2 font-bold text-xl">Welcome to the Data Ingestion Dashboard</div>
