@@ -76,3 +76,25 @@ as $$
   select id, parent_page_id, path, meta
   from chain;
 $$;
+
+-- Dashboard analytics view: v_ticket_revenue
+CREATE OR REPLACE VIEW v_ticket_revenue AS
+SELECT
+  t.ticketid AS ticket_id,
+  t.subject,
+  t.tickettype AS type,
+  t.ticketstatus AS status,
+  i.display_name AS inbox,
+  q.quote_number,
+  q.status AS quote_status,
+  q.quote_date,
+  q.total_amount AS quote_total,
+  inv.invoice_number,
+  inv.status AS invoice_status,
+  inv.total AS invoice_total,
+  inv.contact_name
+FROM source_desk_tickets t
+LEFT JOIN source_desk_inboxes i ON t.inboxid = i.id
+LEFT JOIN source_xero_quotes q ON q.reference ~ (t.ticketid::text)
+LEFT JOIN source_xero_invoices inv ON inv.invoice_number = q.quote_number
+   OR (inv.contact_name = q.contact_name AND inv.total = q.total_amount);

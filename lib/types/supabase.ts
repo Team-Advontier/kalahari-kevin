@@ -239,6 +239,13 @@ export type Database = {
             referencedRelation: "source_desk_tickets"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "core_file_link_desk_tickets_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_ticket_revenue"
+            referencedColumns: ["ticket_id"]
+          },
         ]
       }
       core_file_link_entities: {
@@ -4974,6 +4981,20 @@ export type Database = {
             referencedColumns: ["auth_user_id"]
           },
         ]
+      }
+      v_ticket_revenue: {
+        Row: {
+          contact_name: string | null
+          invoice_number: string | null
+          invoice_status: string | null
+          invoice_total: number | null
+          quote_number: string | null
+          quote_status: string | null
+          quote_total: number | null
+          subject: string | null
+          ticket_id: string | null
+        }
+        Relationships: []
       }
     }
     Functions: {

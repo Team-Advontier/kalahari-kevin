@@ -1,0 +1,91 @@
+.
+├── AppStructure.txt
+├── components
+│   ├── components
+│   │   ├── components
+│   │   └── dashboard
+│   ├── dashboard
+│   │   ├── DashboardSummaryCards.tsx
+│   │   ├── filters
+│   │   │   ├── ContactFilter.tsx
+│   │   │   ├── DateRangePicker.tsx
+│   │   │   └── QuoteStatusFilter.tsx
+│   │   └── TicketRevenueTable.tsx
+│   ├── data-uploaders
+│   │   ├── AgentUploader.tsx
+│   │   ├── ArticleUploader.tsx
+│   │   ├── CategoryUploader.tsx
+│   │   ├── CompanyUploader.tsx
+│   │   ├── CustomerUploader.tsx
+│   │   ├── ProjectUploader.tsx
+│   │   ├── StatusUploader.tsx
+│   │   ├── TaskUploader.tsx
+│   │   ├── TypeUploader.tsx
+│   │   ├── XeroContactUploader.tsx
+│   │   ├── XeroInvoiceUploader.tsx
+│   │   └── XeroQuoteUploader.tsx
+│   ├── ExportToolbar.tsx
+│   ├── flattenTickets.ts
+│   ├── SearchDialog.tsx
+│   ├── TicketTable.tsx
+│   ├── TicketUpload.tsx
+│   └── ui
+│       ├── button.tsx
+│       ├── command.tsx
+│       ├── dialog.tsx
+│       ├── input.tsx
+│       ├── label.tsx
+│       └── table.tsx
+├── components.json
+├── global.d.ts
+├── lib
+│   ├── errors.ts
+│   ├── generate-embeddings.ts
+│   ├── queries
+│   │   └── getTicketRevenueData.ts
+│   ├── scripts
+│   │   └── extract-supabase-types.ts
+│   ├── supabaseClient.ts
+│   ├── types
+│   │   └── supabase.ts
+│   └── utils.ts
+├── LICENSE
+├── next-env.d.ts
+├── next.config.js
+├── package.json
+├── pages
+│   ├── _app.tsx
+│   ├── _document.tsx
+│   ├── api
+│   │   ├── ticket-revenue.ts
+│   │   └── vector-search.ts
+│   ├── dashboard.tsx
+│   ├── docs
+│   │   └── openai_embeddings.mdx
+│   └── index.tsx
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── postcss.config.js
+├── public
+│   ├── favicon.ico
+│   ├── github.svg
+│   ├── next.svg
+│   ├── supabase.svg
+│   ├── thirteen.svg
+│   ├── twitter.svg
+│   └── vercel.svg
+├── README.md
+├── styles
+│   ├── globals.css
+│   └── Home.module.css
+├── supabase
+│   ├── config.toml
+│   ├── migrations
+│   │   └── 20230406025118_init.sql
+│   └── seed.sql
+├── tailwind.config.js
+├── tsconfig.json
+└── types
+    └── sse.d.ts
+
+21 directories, 68 files
